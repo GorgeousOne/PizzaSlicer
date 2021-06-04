@@ -34,11 +34,12 @@ cameraTrigger.onclick = function () {
 	pizzaSlicer.height = cameraView.videoHeight;
 	pizzaSlicer.getContext("2d").drawImage(cameraView, 0, 0);
 	buffer.src = pizzaSlicer.toDataURL("image/png");
+	console.log(cameraView.videoWidth, cameraView.videoHeight);
 
 	stopStreamedVideo(cameraView);
 	cameraTrigger.parentElement.removeChild(cameraTrigger);
 
-	console.log(pizzaSlicer.offsetLeft, pizzaSlicer.offsetTop);
+	console.log(pizzaSlicer.getBoundingClientRect());
 };
 
 function stopStreamedVideo(videoElem) {
@@ -51,6 +52,7 @@ function stopStreamedVideo(videoElem) {
 	videoElem.srcObject = null;
 }
 
+let pizza = new Pizza(0, 0, 25);
 function drawSliceTool() {
 	let width = pizzaSlicer.width;
 	let height = pizzaSlicer.height;
@@ -58,14 +60,20 @@ function drawSliceTool() {
 	let ctx = pizzaSlicer.getContext("2d");
 	ctx.drawImage(buffer, 0, 0);
 
+	pizza.setCenter(mouseX, mouseY);
+	ctx.arc(mouseX, mouseY, 100, 0, 2*Math.PI);
+
 	ctx.beginPath();
-	ctx.moveTo(mouseX, 20);
-	ctx.lineTo(mouseX, height-20);
 
 	ctx.lineJoin = "round";
 	ctx.lineCap = "round";
-	ctx.lineWidth = 10;
+	ctx.lineWidth = 3;
 	ctx.strokeStyle = "#00ffff";
+
+	pizza.display(ctx);
+
+	ctx.moveTo(mouseX, 20);
+	ctx.lineTo(mouseX, height-20);
 	ctx.stroke();
 }
 
@@ -108,12 +116,15 @@ function handleTouchMove(event) {
 }
 
 function moveMouse(x, y) {
-	mouseX = x;
-	mouseY = y;
+	let scaleX = pizzaSlicer.clientWidth / document.body.clientWidth;
+	let scaleY = pizzaSlicer.clientHeight / document.body.clientHeight;
+
+	mouseX = x * scaleX;
+	mouseY = y * scaleY;
 	document.getElementById("demo").innerHTML = x + ", " + y;
-	// if (isDragging) {
-		drawSliceTool();
-	// }
+	drawSliceTool();
+
+
 }
 // Start the video stream when the window loads
 window.addEventListener("load", cameraStart, false);
