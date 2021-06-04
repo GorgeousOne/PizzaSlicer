@@ -1,5 +1,6 @@
+
 // Set constraints for the video stream
-var constraints = {
+let constraints = {
 	video: {
 		facingMode: {
 			"ideal" : "environment"
@@ -27,19 +28,43 @@ function cameraStart() {
 		});
 }
 
-
 // Take a picture when cameraTrigger is tapped
 cameraTrigger.onclick = function () {
-	pizzaSlicer.width = cameraView.videoWidth;
-	pizzaSlicer.height = cameraView.videoHeight;
-	pizzaSlicer.getContext("2d").drawImage(cameraView, 0, 0);
+	// pizzaSlicer.width = cameraView.videoWidth;
+	// pizzaSlicer.height = cameraView.videoHeight;
+
+	let imgWidth = cameraView.videoWidth;
+	let imgHeight = cameraView.videoHeight;
+	let screenWidth = cameraView.clientWidth;
+	let screenHeight = cameraView.clientHeight;
+
+	let imgRatio = imgWidth / imgHeight;
+	let screenRatio = screenWidth / screenHeight;
+
+	if (screenRatio > imgRatio) {
+		pizzaSlicer.width = screenHeight * imgRatio;
+		pizzaSlicer.height = screenHeight;
+		canvasOffX = (screenWidth - pizzaSlicer.width) / 2;
+	}else {
+		pizzaSlicer.width = screenWidth;
+		pizzaSlicer.height = screenWidth / imgRatio;
+		canvasOffY = (screenHeight - pizzaSlicer.height) / 2;
+	}
+	pizzaSlicer.getContext("2d").drawImage(cameraView, 0, 0, pizzaSlicer.width, pizzaSlicer.height);
 	buffer.src = pizzaSlicer.toDataURL("image/png");
-	console.log(cameraView.videoWidth, cameraView.videoHeight);
 
 	stopStreamedVideo(cameraView);
 	cameraTrigger.parentElement.removeChild(cameraTrigger);
 
+	console.log(pizzaSlicer.width, pizzaSlicer.height);
 	console.log(pizzaSlicer.getBoundingClientRect());
+
+	pizzaSlicer.onmousemove = handleMouseMove;
+	pizzaSlicer.onmousedown = handleMouseDown;
+	pizzaSlicer.onmouseup = handleMouseUp;
+	pizzaSlicer.ontouchstart = handleTouchStart;
+	pizzaSlicer.ontouchend = handleTouchEnd;
+	pizzaSlicer.ontouchmove = handleTouchMove;
 };
 
 function stopStreamedVideo(videoElem) {
@@ -80,13 +105,8 @@ function drawSliceTool() {
 let mouseX;
 let mouseY;
 let isDragging;
-
-pizzaSlicer.onmousemove = handleMouseMove;
-pizzaSlicer.onmousedown = handleMouseDown;
-pizzaSlicer.onmouseup = handleMouseUp;
-pizzaSlicer.ontouchstart = handleTouchStart;
-pizzaSlicer.ontouchend = handleTouchEnd;
-pizzaSlicer.ontouchmove = handleTouchMove;
+let canvasOffX = 0;
+let canvasOffY = 0;
 
 function handleMouseDown(event){
 	isDragging=true;
@@ -116,11 +136,8 @@ function handleTouchMove(event) {
 }
 
 function moveMouse(x, y) {
-	let scaleX = pizzaSlicer.clientWidth / document.body.clientWidth;
-	let scaleY = pizzaSlicer.clientHeight / document.body.clientHeight;
-
-	mouseX = x * scaleX;
-	mouseY = y * scaleY;
+	mouseX = x - canvasOffX;
+	mouseY = y - canvasOffY;
 	document.getElementById("demo").innerHTML = x + ", " + y;
 	drawSliceTool();
 
