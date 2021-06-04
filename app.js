@@ -14,10 +14,6 @@ const cameraView = document.querySelector("#camera--view"),
 	buffer = document.querySelector("#buffer"),
 	cameraTrigger = document.querySelector("#camera--trigger");
 
-pizzaSlicer.onmousemove = handleMouseMove;
-pizzaSlicer.onmousedown = handleMouseDown;
-pizzaSlicer.onmouseup = handleMouseUp;
-
 // Access the device camera and stream to cameraView
 function cameraStart() {
 	navigator.mediaDevices
@@ -77,6 +73,13 @@ let mouseX;
 let mouseY;
 let isDragging;
 
+pizzaSlicer.onmousemove = handleMouseMove;
+pizzaSlicer.onmousedown = handleMouseDown;
+pizzaSlicer.onmouseup = handleMouseUp;
+pizzaSlicer.ontouchstart = handleTouchStart;
+pizzaSlicer.ontouchend = handleTouchEnd;
+pizzaSlicer.ontouchmove = handleTouchMove;
+
 function handleMouseDown(event){
 	isDragging=true;
 }
@@ -85,20 +88,32 @@ function handleMouseUp(event){
 	isDragging=false;
 }
 
-// function handleMouseOut(event){
-// 	mouseX=parseInt(event.clientX);
-// 	mouseY=parseInt(event.clientY);
-	// isDragging=false;
-// }
-
 function handleMouseMove(event){
-	mouseX=parseInt(event.clientX) - pizzaSlicer.offsetLeft;
-	mouseY=parseInt(event.clientY) - pizzaSlicer.offsetTop;
-
-	if (isDragging) {
-		drawSliceTool();
-	}
+	moveMouse(event.clientX, event.clientY);
 }
 
+function handleTouchStart(event) {
+	isDragging = true;
+	console.log("start");
+}
+
+function handleTouchEnd(event) {
+	isDragging = false;
+	console.log("stop");
+}
+
+function handleTouchMove(event) {
+	console.log("move");
+	moveMouse(event.touches[0].clientX, event.touches[0].clientY);
+}
+
+function moveMouse(x, y) {
+	mouseX = x;
+	mouseY = y;
+	document.getElementById("demo").innerHTML = x + ", " + y;
+	// if (isDragging) {
+		drawSliceTool();
+	// }
+}
 // Start the video stream when the window loads
 window.addEventListener("load", cameraStart, false);
