@@ -42,12 +42,13 @@ cameraTrigger.onclick = function () {
 	cameraTrigger.parentElement.removeChild(cameraTrigger);
 
 	dragHandler = new DragHandler();
-	dragHandler.registerNode(new DragNode(100, 100).setBounds(0, 0, canvas.width, canvas.height));
-	dragHandler.registerNode(new DragNode(300, 300).setBounds(0, 0, canvas.width, canvas.height));
-	dragHandler.registerNode(new DragNode(200, 500).setBounds(0, 0, canvas.width, canvas.height));
-	dragHandler.registerNode(new DragNode(500, 200).setBounds(0, 0, canvas.width, canvas.height));
 
-	update();
+	let minExtent = Math.min(canvas.width, canvas.height);
+	pizzaTool = new PizzaTool(canvas.width/2, canvas.height/2, minExtent/4);
+	pizzaTool.setBounds(0, 0, canvas.width, canvas.height);
+	// dragHandler.registerNode(new DragNode(500, 200).setBounds(0, 0, canvas.width, canvas.height));
+
+	repaint();
 };
 
 function createCanvas() {
@@ -74,6 +75,8 @@ function createCanvas() {
 	canvas.onmousemove = handleMouseMove;
 	canvas.onmousedown = handleMouseDown;
 	canvas.onmouseup = handleMouseUp;
+	// canvas.onmouseout = handleMouseUp;
+
 	canvas.ontouchstart = handleTouchStart;
 	canvas.ontouchend = handleTouchEnd;
 	canvas.ontouchmove = handleTouchMove;
@@ -123,8 +126,9 @@ function moveMouse(x, y) {
 }
 
 let dragHandler;
+let pizzaTool;
 
-function update() {
+function repaint() {
 	let ctx = canvas.getContext("2d");
 	ctx.drawImage(buffer, 0, 0);
 
@@ -135,6 +139,8 @@ function update() {
 	for (let node of dragHandler.nodes) {
 		node.display(ctx);
 	}
+
+	pizzaTool.display(ctx);
 }
 
 // Start the video stream when the window loads

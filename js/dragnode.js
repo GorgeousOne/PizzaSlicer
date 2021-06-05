@@ -8,22 +8,18 @@ class DragNode {
 		this.radius = nodeSize;
 
 		this.isDragged = false;
-		//drag point offset from node location
-		this.dx = 0;
-		this.dy = 0;
+		this.dragX = 0;
+		this.dragY = 0;
 
-		this.minX = 0;
-		this.minY = 0;
-		this.maxX = 500;
-		this.maxY = 500;
 		this.color = new Color(0, 255, 255);
 	}
 
-	setBounds(minX, minY, maxX, maxY) {
+	setBounds(minX, minY, maxX, maxY, spacing = nodeSize) {
 		this.minX = minX;
 		this.minY = minY;
 		this.maxX = maxX;
 		this.maxY = maxY;
+		this.spacing = spacing;
 		return this;
 	}
 
@@ -35,8 +31,8 @@ class DragNode {
 
 	startDrag(mouseX, mouseY) {
 		this.isDragged = true;
-		this.dx = this.x - mouseX;
-		this.dy = this.y - mouseY;
+		this.dragX = this.x - mouseX;
+		this.dragY = this.y - mouseY;
 		this.color.a = 0.5;
 	}
 
@@ -46,8 +42,16 @@ class DragNode {
 	}
 
 	move(mouseX, mouseY) {
-		this.x = clamp(mouseX + this.dx, this.minX, this.maxX);
-		this.y = clamp(mouseY + this.dy, this.minY, this.maxY);
+		let newX = mouseX + this.dragX;
+		let newY = mouseY + this.dragY;
+
+		if (this.minX !== undefined) {
+			this.x = clamp(newX, this.minX + this.spacing, this.maxX - this.spacing);
+			this.y = clamp(newY, this.minY + this.spacing, this.maxY - this.spacing);
+		}else {
+			this.x = newX;
+			this.y = newY;
+		}
 	}
 
 	display(ctx) {
