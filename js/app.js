@@ -39,18 +39,32 @@ function stopCamera(videoElem) {
 cameraTrigger.onclick = function () {
 	createCanvas();
 	stopCamera(cameraView);
-	cameraTrigger.innerHTML = "Circle your pizza";
 	// cameraTrigger.parentElement.removeChild(cameraTrigger);
 
 	dragHandler = new DragHandler();
 
 	let minExtent = Math.min(canvas.width, canvas.height);
-	pizzaTool = new PizzaTool(canvas.width/2, canvas.height/2, minExtent/4);
-	pizzaTool.setBounds(0, 0, canvas.width, canvas.height);
-	// dragHandler.registerNode(new DragNode(500, 200).setBounds(0, 0, canvas.width, canvas.height));
+	circleTool = new CircleTool(canvas.width/2, canvas.height/2, minExtent/4);
+	circleTool.setBounds(0, 0, canvas.width, canvas.height);
 
+	cameraTrigger.innerHTML = "Circle your pizza";
+	cameraTrigger.onclick = startPizzaSlicing;
 	repaint();
 };
+
+function startPizzaSlicing() {
+	circleTool.unregister();
+	sliceTool = new SliceTool(
+		circleTool.centerNode.x,
+		circleTool.centerNode.y,
+		circleTool.satellite.getRadius());
+
+	// sliceTool.setBounds(0, 0, canvas.width, canvas.height);
+
+	cameraTrigger.onclick = undefined;
+
+	repaint();
+}
 
 function createCanvas() {
 	let imgWidth = cameraView.videoWidth;
@@ -127,7 +141,8 @@ function moveMouse(x, y) {
 }
 
 let dragHandler;
-let pizzaTool;
+let circleTool;
+let sliceTool;
 
 function repaint() {
 	let ctx = canvas.getContext("2d");
@@ -137,7 +152,7 @@ function repaint() {
 	ctx.lineCap = "round";
 	ctx.lineWidth = 3;
 
-	pizzaTool.display(ctx);
+	circleTool.display(ctx);
 
 	for (let node of dragHandler.nodes) {
 		node.display(ctx);

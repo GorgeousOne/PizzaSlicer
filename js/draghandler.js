@@ -14,6 +14,13 @@ class DragHandler {
 		this.nodes.push(dragNode);
 	}
 
+	unregisterNode(dragNode) {
+		if (this.nodes.includes(dragNode)) {
+			let i = this.nodes.indexOf(dragNode);
+			this.nodes.splice(i, 1);
+		}
+	}
+
 	onCursorDown(mouseX, mouseY) {
 		this.isDragging = true;
 
