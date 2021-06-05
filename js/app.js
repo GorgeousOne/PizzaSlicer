@@ -58,11 +58,10 @@ function startPizzaSlicing() {
 		circleTool.centerNode.x,
 		circleTool.centerNode.y,
 		circleTool.satellite.getRadius());
+	circleTool = undefined;
 
-	// sliceTool.setBounds(0, 0, canvas.width, canvas.height);
-
+	cameraTrigger.innerHTML = "Mark the pizza cuts";
 	cameraTrigger.onclick = undefined;
-
 	repaint();
 }
 
@@ -152,7 +151,12 @@ function repaint() {
 	ctx.lineCap = "round";
 	ctx.lineWidth = 3;
 
-	circleTool.display(ctx);
+	if (sliceTool) {
+		sliceTool.display(ctx);
+	}//else
+	if (circleTool) {
+		circleTool.display(ctx);
+	}
 
 	for (let node of dragHandler.nodes) {
 		node.display(ctx);

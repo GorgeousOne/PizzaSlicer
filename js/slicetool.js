@@ -12,16 +12,21 @@ class SliceTool {
 		dragHandler.registerNode(this.intersectionNode);
 
 		this.slicers = [];
+		this.rays = [];
 		let slicerCount = 6;
 		
 		for (let i = 0; i < slicerCount; ++i) {
-			let slicer = new OrbitNode(this.x, this.y, this.radius, this.radius, this.radius);
-			slicer.setAngle(i/slicerCount * 2*Math.PI);
+			let slicerNode = new OrbitNode(this.x, this.y, this.radius, this.radius, this.radius);
+			slicerNode.setAngle(i/slicerCount * 2*Math.PI);
 
-			this.slicers.push(slicer);
-			dragHandler.registerNode(slicer);
+			let ray = new Ray(this.intersectionNode, slicerNode);
+
+			this.slicers.push(slicerNode);
+			this.rays.push(ray);
+			dragHandler.registerNode(slicerNode);
 		}
-		console.log(this.slicers.length);
+
+		console.log(this.rays.length);
 	}
 
 	update() {
@@ -29,12 +34,17 @@ class SliceTool {
 	}
 
 	display(ctx) {
+		console.log("log");
 		this.update();
 
 		ctx.beginPath();
 		ctx.strokeStyle = this.color.string();
 		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 		ctx.stroke();
+
+		for (let ray of this.rays) {
+			ray.display(ctx);
+		}
 	}
 }
 

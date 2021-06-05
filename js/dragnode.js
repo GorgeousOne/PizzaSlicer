@@ -1,4 +1,4 @@
-const nodeSize = 50;
+const nodeSize = 30;
 
 class DragNode {
 
@@ -11,7 +11,7 @@ class DragNode {
 		this.dragX = 0;
 		this.dragY = 0;
 
-		this.color = new Color(0, 255, 255);
+		this.color = new Color(0, 255, 255, 0.5);
 	}
 
 	setBounds(minX, minY, maxX, maxY, spacing = nodeSize / 2) {
@@ -42,12 +42,12 @@ class DragNode {
 		this.isDragged = true;
 		this.dragX = this.x - mouseX;
 		this.dragY = this.y - mouseY;
-		this.color.a = 0.5;
+		this.color.a = 1;
 	}
 
 	stopDrag() {
 		this.isDragged = false;
-		this.color.a = 1;
+		this.color.a = 0.5;
 	}
 
 	move(mouseX, mouseY) {
