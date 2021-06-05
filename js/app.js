@@ -165,3 +165,7 @@ function repaint() {
 
 // Start the video stream when the window loads
 window.addEventListener("load", startCamera, false);
+
+function clamp(num, min, max) {
+	return Math.max(min, Math.min(max, num));
+}

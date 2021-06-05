@@ -7,26 +7,24 @@ class SliceTool {
 		this.radius = radius;
 		this.color = new Color(0, 255, 255);
 
-		this.intersectionNode = new OrbitNode(this.x, this.y, 0, 0);
-		this.intersectionNode.maxRadius = this.radius - this.intersectionNode.size;
-		dragHandler.registerNode(this.intersectionNode);
+		this.midNode = new OrbitNode(this.x, this.y, 0, 0);
+		this.midNode.maxRadius = this.radius - this.midNode.size;
+		dragHandler.registerNode(this.midNode);
 
-		this.slicers = [];
+		this.controlNodes = [];
 		this.rays = [];
-		let slicerCount = 6;
+		let slicerCount = 3;
 		
 		for (let i = 0; i < slicerCount; ++i) {
-			let slicerNode = new OrbitNode(this.x, this.y, this.radius, this.radius, this.radius);
-			slicerNode.setAngle(i/slicerCount * 2*Math.PI);
+			let controlNode = new OrbitNode(this.x, this.y, this.radius, this.radius, this.radius);
+			controlNode.setAngle(i/slicerCount * 2*Math.PI);
 
-			let ray = new Ray(this.intersectionNode, slicerNode);
+			let ray = new Ray(new Vec2(this.x, this.y), this.midNode, controlNode);
 
-			this.slicers.push(slicerNode);
+			this.controlNodes.push(controlNode);
 			this.rays.push(ray);
-			dragHandler.registerNode(slicerNode);
+			dragHandler.registerNode(controlNode);
 		}
-
-		console.log(this.rays.length);
 	}
 
 	update() {
@@ -34,7 +32,6 @@ class SliceTool {
 	}
 
 	display(ctx) {
-		console.log("log");
 		this.update();
 
 		ctx.beginPath();
