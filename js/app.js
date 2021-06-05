@@ -9,14 +9,12 @@ let constraints = {
 	audio: false
 };
 
-// Define constants
 const cameraView = document.querySelector("#camera--view"),
-	pizzaSlicer = document.querySelector("#pizza-slicer"),
+	canvas = document.querySelector("#pizza-slicer"),
 	buffer = document.querySelector("#buffer"),
 	cameraTrigger = document.querySelector("#camera--trigger");
 
-// Access the device camera and stream to cameraView
-function cameraStart() {
+function startCamera() {
 	navigator.mediaDevices
 		.getUserMedia(constraints)
 		.then(function (stream) {
@@ -28,10 +26,29 @@ function cameraStart() {
 		});
 }
 
-cameraTrigger.onclick = function () {
-	// pizzaSlicer.width = cameraView.videoWidth;
-	// pizzaSlicer.height = cameraView.videoHeight;
+function stopCamera(videoElem) {
+	const stream = videoElem.srcObject;
+	const tracks = stream.getTracks();
 
+	tracks.forEach(function(track) {
+		track.stop();
+	});
+	videoElem.srcObject = null;
+}
+
+cameraTrigger.onclick = function () {
+	createCanvas();
+	stopCamera(cameraView);
+	cameraTrigger.parentElement.removeChild(cameraTrigger);
+
+	dragHandler = new DragHandler();
+	dragHandler.registerNode(new DragNode(100, 100, 25).setBounds(0, 0, canvas.width, canvas.height));
+	dragHandler.registerNode(new DragNode(300, 300, 30).setBounds(0, 0, canvas.width, canvas.height));
+
+	update();
+};
+
+function createCanvas() {
 	let imgWidth = cameraView.videoWidth;
 	let imgHeight = cameraView.videoHeight;
 	let screenWidth = cameraView.clientWidth;
@@ -41,39 +58,23 @@ cameraTrigger.onclick = function () {
 	let screenRatio = screenWidth / screenHeight;
 
 	if (screenRatio > imgRatio) {
-		pizzaSlicer.width = screenHeight * imgRatio;
-		pizzaSlicer.height = screenHeight;
-		canvasOffX = (screenWidth - pizzaSlicer.width) / 2;
+		canvas.width = screenHeight * imgRatio;
+		canvas.height = screenHeight;
+		canvasOffX = Math.floor((screenWidth - canvas.width) / 2);
 	}else {
-		pizzaSlicer.width = screenWidth;
-		pizzaSlicer.height = screenWidth / imgRatio;
-		canvasOffY = (screenHeight - pizzaSlicer.height) / 2;
+		canvas.width = screenWidth;
+		canvas.height = screenWidth / imgRatio;
+		canvasOffY = Math.floor((screenHeight - canvas.height) / 2);
 	}
-	pizzaSlicer.getContext("2d").drawImage(cameraView, 0, 0, pizzaSlicer.width, pizzaSlicer.height);
-	buffer.src = pizzaSlicer.toDataURL("image/png");
+	canvas.getContext("2d").drawImage(cameraView, 0, 0, canvas.width, canvas.height);
+	buffer.src = canvas.toDataURL("image/png");
 
-	stopStreamedVideo(cameraView);
-	cameraTrigger.parentElement.removeChild(cameraTrigger);
-
-	pizzaSlicer.onmousemove = handleMouseMove;
-	pizzaSlicer.onmousedown = handleMouseDown;
-	pizzaSlicer.onmouseup = handleMouseUp;
-	pizzaSlicer.ontouchstart = handleTouchStart;
-	pizzaSlicer.ontouchend = handleTouchEnd;
-	pizzaSlicer.ontouchmove = handleTouchMove;
-	dragHandler = new DragHandler();
-	dragHandler.registerNode(new DragNode(100, 100, 25));
-	dragHandler.registerNode(new DragNode(300, 300, 30));
-};
-
-function stopStreamedVideo(videoElem) {
-	const stream = videoElem.srcObject;
-	const tracks = stream.getTracks();
-
-	tracks.forEach(function(track) {
-		track.stop();
-	});
-	videoElem.srcObject = null;
+	canvas.onmousemove = handleMouseMove;
+	canvas.onmousedown = handleMouseDown;
+	canvas.onmouseup = handleMouseUp;
+	canvas.ontouchstart = handleTouchStart;
+	canvas.ontouchend = handleTouchEnd;
+	canvas.ontouchmove = handleTouchMove;
 }
 
 let mouseX;
@@ -117,14 +118,12 @@ function handleTouchMove(event) {
 function moveMouse(x, y) {
 	mouseX = x - canvasOffX;
 	mouseY = y - canvasOffY;
-	// document.getElementById("demo").innerHTML = x + ", " + y;
 }
 
-// let pizza = new Pizza(0, 0, 25);
 let dragHandler;
 
 function update() {
-	let ctx = pizzaSlicer.getContext("2d");
+	let ctx = canvas.getContext("2d");
 	ctx.drawImage(buffer, 0, 0);
 
 	ctx.beginPath();
@@ -140,4 +139,4 @@ function update() {
 }
 
 // Start the video stream when the window loads
-window.addEventListener("load", cameraStart, false);
+window.addEventListener("load", startCamera, false);

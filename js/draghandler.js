@@ -5,7 +5,6 @@ class DragHandler {
 		this.nodes = [];
 		this.draggedNode = undefined;
 
-
 		this.pmouseX = 0;
 		this.pmouseX = 0;
 		this.isDragging = false;
@@ -21,6 +20,7 @@ class DragHandler {
 		for (let node of this.nodes) {
 			if (node.contains(mouseX, mouseY)) {
 				this.draggedNode = node;
+				this.draggedNode.startDrag(mouseX, mouseY);
 				break;
 			}
 		}
@@ -30,14 +30,17 @@ class DragHandler {
 
 	onCursorUp() {
 		this.isDragging = false;
-		this.draggedNode = undefined;
+		if (this.draggedNode) {
+			this.draggedNode.stopDrag();
+			this.draggedNode = undefined;
+		}
 	}
 
 	onCursorMove(mouseX, mouseY) {
 		if (this.draggedNode) {
-			let dx = mouseX - this.pmouseX;
-			let dy = mouseY - this.pmouseY;
-			this.draggedNode.move(dx, dy);
+			// let dx = mouseX - this.pmouseX;
+			// let dy = mouseY - this.pmouseY;
+			this.draggedNode.move(mouseX, mouseY);
 		}
 		this.pmouseX = mouseX;
 		this.pmouseY = mouseY;
