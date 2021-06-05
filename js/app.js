@@ -42,8 +42,10 @@ cameraTrigger.onclick = function () {
 	cameraTrigger.parentElement.removeChild(cameraTrigger);
 
 	dragHandler = new DragHandler();
-	dragHandler.registerNode(new DragNode(100, 100, 25).setBounds(0, 0, canvas.width, canvas.height));
-	dragHandler.registerNode(new DragNode(300, 300, 30).setBounds(0, 0, canvas.width, canvas.height));
+	dragHandler.registerNode(new DragNode(100, 100).setBounds(0, 0, canvas.width, canvas.height));
+	dragHandler.registerNode(new DragNode(300, 300).setBounds(0, 0, canvas.width, canvas.height));
+	dragHandler.registerNode(new DragNode(200, 500).setBounds(0, 0, canvas.width, canvas.height));
+	dragHandler.registerNode(new DragNode(500, 200).setBounds(0, 0, canvas.width, canvas.height));
 
 	update();
 };
@@ -126,12 +128,9 @@ function update() {
 	let ctx = canvas.getContext("2d");
 	ctx.drawImage(buffer, 0, 0);
 
-	ctx.beginPath();
 	ctx.lineJoin = "round";
 	ctx.lineCap = "round";
 	ctx.lineWidth = 3;
-	ctx.strokeStyle = "#00ffff";
-	ctx.fillStyle = "#00ffff";
 
 	for (let node of dragHandler.nodes) {
 		node.display(ctx);

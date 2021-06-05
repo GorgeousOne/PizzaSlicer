@@ -1,10 +1,11 @@
+const nodeSize = 25;
 
 class DragNode {
 
-	constructor(x, y, radius) {
+	constructor(x, y) {
 		this.x = x;
 		this.y = y;
-		this.radius = radius;
+		this.radius = nodeSize;
 
 		this.isDragged = false;
 		//drag point offset from node location
@@ -15,6 +16,7 @@ class DragNode {
 		this.minY = 0;
 		this.maxX = 500;
 		this.maxY = 500;
+		this.color = new Color(0, 255, 255);
 	}
 
 	setBounds(minX, minY, maxX, maxY) {
@@ -28,18 +30,19 @@ class DragNode {
 	contains(x, y) {
 		let dx = x - this.x;
 		let dy = y - this.y;
-		return dx*dx + dy*dy < this.radius*this.radius;
+		return dx * dx + dy * dy < this.radius * this.radius;
 	}
 
 	startDrag(mouseX, mouseY) {
-		this.isDragged = false;
-		this.dx = mouseX - this.x;
-		this.dy = mouseY - this.y;
-		console.log(this.dx, this.dy);
+		this.isDragged = true;
+		this.dx = this.x - mouseX;
+		this.dy = this.y - mouseY;
+		this.color.a = 0.5;
 	}
 
 	stopDrag() {
 		this.isDragged = false;
+		this.color.a = 1;
 	}
 
 	move(mouseX, mouseY) {
@@ -48,7 +51,9 @@ class DragNode {
 	}
 
 	display(ctx) {
-		ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
+		ctx.beginPath();
+		ctx.fillStyle = this.color.string();
+		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
 		ctx.fill();
 	}
 }

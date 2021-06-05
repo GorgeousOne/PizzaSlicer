@@ -26,6 +26,7 @@ class DragHandler {
 		}
 		this.pmouseX = mouseX;
 		this.pmouseY = mouseY;
+		update();
 	}
 
 	onCursorUp() {
@@ -34,6 +35,7 @@ class DragHandler {
 			this.draggedNode.stopDrag();
 			this.draggedNode = undefined;
 		}
+		update();
 	}
 
 	onCursorMove(mouseX, mouseY) {
@@ -41,10 +43,10 @@ class DragHandler {
 			// let dx = mouseX - this.pmouseX;
 			// let dy = mouseY - this.pmouseY;
 			this.draggedNode.move(mouseX, mouseY);
+			update();
 		}
 		this.pmouseX = mouseX;
 		this.pmouseY = mouseY;
-		update();
 	}
 
 }
