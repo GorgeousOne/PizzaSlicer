@@ -1,11 +1,11 @@
-const nodeSize = 25;
+const nodeSize = 50;
 
 class DragNode {
 
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
-		this.radius = nodeSize;
+		this.size = nodeSize;
 
 		this.isDragged = false;
 		this.dragX = 0;
@@ -14,19 +14,28 @@ class DragNode {
 		this.color = new Color(0, 255, 255);
 	}
 
-	setBounds(minX, minY, maxX, maxY, spacing = nodeSize) {
+	setBounds(minX, minY, maxX, maxY, spacing = nodeSize / 2) {
 		this.minX = minX;
 		this.minY = minY;
 		this.maxX = maxX;
 		this.maxY = maxY;
-		this.spacing = spacing;
+		this.boundSpacing = spacing;
 		return this;
+	}
+
+	getMinBoundDistance() {
+		let boundDistances = [
+			this.x - this.minX ,
+			this.y - this.minY,
+			this.maxX - this.x,
+			this.maxY - this.y];
+		return Math.min(...boundDistances);
 	}
 
 	contains(x, y) {
 		let dx = x - this.x;
 		let dy = y - this.y;
-		return dx * dx + dy * dy < this.radius * this.radius;
+		return Math.pow(dx, 2) + Math.pow(dy, 2) < Math.pow(this.size / 2, 2);
 	}
 
 	startDrag(mouseX, mouseY) {
@@ -46,9 +55,9 @@ class DragNode {
 		let newY = mouseY + this.dragY;
 
 		if (this.minX !== undefined) {
-			this.x = clamp(newX, this.minX + this.spacing, this.maxX - this.spacing);
-			this.y = clamp(newY, this.minY + this.spacing, this.maxY - this.spacing);
-		}else {
+			this.x = clamp(newX, this.minX + this.boundSpacing, this.maxX - this.boundSpacing);
+			this.y = clamp(newY, this.minY + this.boundSpacing, this.maxY - this.boundSpacing);
+		} else {
 			this.x = newX;
 			this.y = newY;
 		}
@@ -57,7 +66,7 @@ class DragNode {
 	display(ctx) {
 		ctx.beginPath();
 		ctx.fillStyle = this.color.string();
-		ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+		ctx.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI);
 		ctx.fill();
 	}
 }

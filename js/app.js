@@ -39,7 +39,8 @@ function stopCamera(videoElem) {
 cameraTrigger.onclick = function () {
 	createCanvas();
 	stopCamera(cameraView);
-	cameraTrigger.parentElement.removeChild(cameraTrigger);
+	cameraTrigger.innerHTML = "Circle your pizza";
+	// cameraTrigger.parentElement.removeChild(cameraTrigger);
 
 	dragHandler = new DragHandler();
 
@@ -136,11 +137,11 @@ function repaint() {
 	ctx.lineCap = "round";
 	ctx.lineWidth = 3;
 
+	pizzaTool.display(ctx);
+
 	for (let node of dragHandler.nodes) {
 		node.display(ctx);
 	}
-
-	pizzaTool.display(ctx);
 }
 
 // Start the video stream when the window loads
