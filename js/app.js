@@ -9,10 +9,11 @@ let constraints = {
 	audio: false
 };
 
-const cameraView = document.querySelector("#camera--view"),
-	canvas = document.querySelector("#pizza-slicer"),
-	buffer = document.querySelector("#buffer"),
-	cameraTrigger = document.querySelector("#camera--trigger");
+const cameraView = document.getElementById("camera--view");
+const canvas = document.getElementById("pizza-slicer");
+const buffer = document.getElementById("buffer");
+const cameraTrigger = document.getElementById("camera--trigger");
+const cameraError = document.getElementById("camera--error");
 
 function startCamera() {
 	navigator.mediaDevices
@@ -20,9 +21,11 @@ function startCamera() {
 		.then(function (stream) {
 			track = stream.getTracks()[0];
 			cameraView.srcObject = stream;
+			cameraTrigger.style.display = "block";
 		})
 		.catch(function (error) {
-			console.error("Oops. Something is broken.", error);
+			document.getElementById("error-container").style.display = "flex";
+			console.error(error);
 		});
 }
 
