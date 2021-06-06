@@ -1,9 +1,8 @@
-
 // Set constraints for the video stream
 let constraints = {
 	video: {
 		facingMode: {
-			"ideal" : "environment"
+			"ideal": "environment"
 		}
 	},
 	audio: false
@@ -13,6 +12,7 @@ const cameraView = document.getElementById("camera--view");
 const canvas = document.getElementById("pizza-slicer");
 const buffer = document.getElementById("buffer");
 const cameraTrigger = document.getElementById("camera--trigger");
+
 // const cameraError = document.getElementById("camera--error");
 
 function startCamera() {
@@ -33,7 +33,7 @@ function stopCamera(videoElem) {
 	const stream = videoElem.srcObject;
 	const tracks = stream.getTracks();
 
-	tracks.forEach(function(track) {
+	tracks.forEach(function (track) {
 		track.stop();
 	});
 	videoElem.srcObject = null;
@@ -47,7 +47,7 @@ cameraTrigger.onclick = function () {
 	dragHandler = new DragHandler();
 
 	let minExtent = Math.min(canvas.width, canvas.height);
-	circleTool = new CircleTool(canvas.width/2, canvas.height/2, minExtent/4);
+	circleTool = new CircleTool(canvas.width / 2, canvas.height / 2, minExtent / 4);
 	circleTool.setBounds(0, 0, canvas.width, canvas.height);
 
 	cameraTrigger.innerHTML = "Circle your pizza";
@@ -66,6 +66,7 @@ function startPizzaSlicing() {
 }
 
 function distributePizza() {
+	sliceTool.unregister();
 	distributeTool = new DistributeTool(
 		circleTool.getMid(),
 		circleTool.getRadius(),
@@ -74,6 +75,7 @@ function distributePizza() {
 
 	cameraTrigger.innerHTML = "Wooh!";
 	cameraTrigger.onclick = undefined;
+	repaint();
 }
 
 function createCanvas() {
@@ -89,7 +91,7 @@ function createCanvas() {
 		canvas.width = screenHeight * imgRatio;
 		canvas.height = screenHeight;
 		canvasOffX = Math.floor((screenWidth - canvas.width) / 2);
-	}else {
+	} else {
 		canvas.width = screenWidth;
 		canvas.height = screenWidth / imgRatio;
 		canvasOffY = Math.floor((screenHeight - canvas.height) / 2);
@@ -112,16 +114,16 @@ let mouseY;
 let canvasOffX = 0;
 let canvasOffY = 0;
 
-function handleMouseDown(event){
+function handleMouseDown(event) {
 	moveMouse(event.clientX, event.clientY);
 	dragHandler.onCursorDown(mouseX, mouseY);
 }
 
-function handleMouseUp(event){
+function handleMouseUp(event) {
 	dragHandler.onCursorUp();
 }
 
-function handleMouseMove(event){
+function handleMouseMove(event) {
 	moveMouse(event.clientX, event.clientY);
 	dragHandler.onCursorMove(mouseX, mouseY);
 }
@@ -158,9 +160,11 @@ function repaint() {
 	ctx.lineCap = "round";
 	ctx.lineWidth = 3;
 
-	if (sliceTool) {
+	if (distributeTool) {
+		distributeTool.display(ctx);
+	} else if (sliceTool) {
 		sliceTool.display(ctx);
-	}else if (circleTool) {
+	} else if (circleTool) {
 		circleTool.display(ctx);
 	}
 
@@ -176,6 +180,6 @@ function clamp(num, min, max) {
 	return Math.max(min, Math.min(max, num));
 }
 
-Math.degrees = function(radians) {
+Math.degrees = function (radians) {
 	return radians * 180 / Math.PI;
 }

@@ -6,6 +6,10 @@ class Slice {
 		this.tipVec = tipVec;
 		this.corner1Vec = corner1Vec;
 		this.corner2Vec = corner2Vec;
+
+		this.stroke = Color.rnd();
+		this.fill = this.stroke.clone();
+		this.fill.a = 0.5;
 	}
 
 	getAngle() {
@@ -23,5 +27,25 @@ class Slice {
 		let phi = Math.abs(edge1.angleTo(edge2));
 		let circleSegmentSize = Math.pow(this.pizzaRadius, 2) * (phi - Math.sin(phi)) / 2;
 		return triangleSize + circleSegmentSize;
+	}
+
+	display(ctx) {
+		let edge1 = sub(this.corner1Vec, this.pizzaMidVec);
+		let edge2 = sub(this.corner2Vec, this.pizzaMidVec);
+
+		let phiStart = Math.atan2(edge1.y, edge1.x);
+		let phiEnd = Math.atan2(edge2.y, edge2.x);
+
+		ctx.strokeStyle = this.stroke.string();
+		ctx.fillStyle = this.fill.string();
+		ctx.beginPath();
+
+		ctx.moveTo(this.corner2Vec.x, this.corner2Vec.y);
+		ctx.lineTo(this.tipVec.x, this.tipVec.y);
+		ctx.lineTo(this.corner1Vec.x, this.corner1Vec.y);
+		ctx.arc(this.pizzaMidVec.x, this.pizzaMidVec.y, this.pizzaRadius, phiStart, phiEnd);
+
+		ctx.stroke();
+		ctx.fill();
 	}
 }

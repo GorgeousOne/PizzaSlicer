@@ -12,17 +12,24 @@ class SliceTool {
 
 		this.controlNodes = [];
 		this.rays = [];
-		let slicerCount = 3;
+		let nodeCount = 3;
 		
-		for (let i = 0; i < slicerCount; ++i) {
+		for (let i = 0; i < nodeCount; ++i) {
 			let controlNode = new OrbitNode(this.mid.x, this.mid.y, this.radius, this.radius, this.radius);
-			controlNode.setAngle(i/slicerCount * 2*Math.PI);
+			controlNode.setAngle(i/nodeCount * 2*Math.PI);
 
 			let ray = new Ray(this.mid.clone(), this.midNode, controlNode);
 
 			this.controlNodes.push(controlNode);
 			this.rays.push(ray);
 			dragHandler.registerNode(controlNode);
+		}
+	}
+
+	unregister() {
+		dragHandler.unregisterNode(this.midNode);
+		for (let node of this.controlNodes) {
+			dragHandler.unregisterNode(node);
 		}
 	}
 

@@ -30,4 +30,10 @@ class DistributeTool {
 	invertAngle(phi) {
 		return phi > 0 ? phi - Math.PI : phi + Math.PI;
 	}
+
+	display(ctx) {
+		for (let slice of this.slices) {
+			slice.display(ctx);
+		}
+	}
 }
