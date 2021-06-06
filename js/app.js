@@ -58,9 +58,8 @@ cameraTrigger.onclick = function () {
 function startPizzaSlicing() {
 	circleTool.unregister();
 	sliceTool = new SliceTool(circleTool.getMid(), circleTool.getRadius());
-	// circleTool = undefined;
 
-	cameraTrigger.innerHTML = "Mark the pizza cuts";
+	cameraTrigger.innerHTML = "Show how your pizza was cut";
 	cameraTrigger.onclick = distributePizza;
 	repaint();
 }

@@ -47,5 +47,16 @@ class Slice {
 
 		ctx.stroke();
 		ctx.fill();
+		this.displayPercentage(ctx, edge1, edge2);
+	}
+
+	displayPercentage(ctx, edge1, edge2) {
+		let percentage = this.getSize() / (Math.PI * Math.pow(this.pizzaRadius, 2));
+		percentage = Math.round(100 * percentage);
+
+		let center = add(this.tipVec, add(edge1, edge2).mul(0.45));
+		ctx.fillStyle = this.stroke.string();
+		console.log(this.stroke.a, this.stroke.string());
+		ctx.fillText(percentage + "%", center.x, center.y);
 	}
 }

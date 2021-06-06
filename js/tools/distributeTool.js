@@ -13,6 +13,7 @@ class DistributeTool {
 		}
 		let angles = Array.from(nodes.keys());
 		angles.sort(function(a,b) { return a - b; });
+		console.log("pizza  size: ", Math.PI * Math.pow(pizzaRadius, 2));
 
 		for (let i = 0; i < angles.length; ++i) {
 			let node1 = nodes.get(angles[i]).clone();
@@ -32,6 +33,10 @@ class DistributeTool {
 	}
 
 	display(ctx) {
+		ctx.font = "30px Montserrat";
+		ctx.textAlign = "center";
+		ctx.textBaseline = 'middle';
+
 		for (let slice of this.slices) {
 			slice.display(ctx);
 		}
