@@ -52,12 +52,12 @@ class Vec2 {
 	 * @param other vector to build cross product with
 	 */
 	crossLength(other) {
-		return Math.abs(this.x * other.y - this.y * other.x);
+		return Math.abs(this.x * other.y - other.x * this.y);
 	}
 
 	angleTo(other) {
-		let acosPhi = this.dot(other) / (this.length() * other.length())
-		return Math.acos(clamp(acosPhi, 0, 1));
+		let acosPhi = this.dot(other) / (this.length() * other.length());
+		return Math.acos(clamp(acosPhi, -1, 1));
 	}
 }
 
@@ -67,13 +67,13 @@ function normal(v1) {
 }
 
 function add(v1, v2) {
-	return new Vec2(v1.x + v2.x, v1.y + v2.y);
-}
-
-function mul(v2, scalar) {
-	return new Vec2(scalar * v2.x, scalar * v2.y);
+	return new Vec2(v1.x + v2.x, v1.y	 + v2.y);
 }
 
 function sub(v1, v2) {
 	return new Vec2(v1.x - v2.x, v1.y - v2.y);
+}
+
+function mul(v2, scalar) {
+	return new Vec2(scalar * v2.x, scalar * v2.y);
 }

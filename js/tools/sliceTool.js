@@ -12,11 +12,11 @@ class SliceTool {
 
 		this.controlNodes = [];
 		this.rays = [];
-		let nodeCount = 3;
+		let rayCount = 2;
 		
-		for (let i = 0; i < nodeCount; ++i) {
+		for (let i = 0; i < rayCount; ++i) {
 			let controlNode = new OrbitNode(this.mid.x, this.mid.y, this.radius, this.radius, this.radius);
-			controlNode.setAngle(i/nodeCount * 2*Math.PI);
+			controlNode.setAngle(i/rayCount * 2*Math.PI);
 
 			let ray = new Ray(this.mid.clone(), this.midNode, controlNode);
 
@@ -41,12 +41,10 @@ class SliceTool {
 		return this.rays;
 	}
 
-	update() {
-
-	}
+	// update() {}
 
 	display(ctx) {
-		this.update();
+		// this.update();
 
 		ctx.beginPath();
 		ctx.strokeStyle = this.color.string();
