@@ -12,7 +12,7 @@ class SliceTool {
 
 		this.controlNodes = [];
 		this.rays = [];
-		let rayCount = 2;
+		let rayCount = 3;
 		
 		for (let i = 0; i < rayCount; ++i) {
 			let controlNode = new OrbitNode(this.mid.x, this.mid.y, this.radius, this.radius, this.radius);

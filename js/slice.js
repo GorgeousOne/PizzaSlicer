@@ -68,6 +68,5 @@ class Slice {
 
 		ctx.fillStyle = this.stroke.string();
 		ctx.fillText(Math.round(100 * this.percentage) + "%", center.x, center.y);
-		console.log(Math.round(100 * this.percentage) + "%");
 	}
 }
