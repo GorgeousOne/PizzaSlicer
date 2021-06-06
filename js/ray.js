@@ -24,6 +24,11 @@ class Ray {
 		return add(start, normal(controlDir).mul(chordLength));
 	}
 
+	getAngle() {
+		let dir = this.getDir();
+		return Math.atan2(dir.y, dir.x);
+	}
+
 	display(ctx) {
 		let start = this.getStart();
 		let end = this.getEnd(start);

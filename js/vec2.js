@@ -47,6 +47,14 @@ class Vec2 {
 		return this.x * other.x + this.y * other.y;
 	}
 
+	/**
+	 * Returns the size a 3D-vector would have constructed by the cross product of two 2D-vectors
+	 * @param other vector to build cross product with
+	 */
+	crossLength(other) {
+		return Math.abs(this.x * other.y - this.y * other.x);
+	}
+
 	angleTo(other) {
 		let acosPhi = this.dot(other) / (this.length() * other.length())
 		return Math.acos(clamp(acosPhi, 0, 1));

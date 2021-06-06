@@ -18,6 +18,14 @@ class CircleTool {
 		dragHandler.unregisterNode(this.satellite);
 	}
 
+	getMid() {
+		return new Vec2(this.centerNode.x, this.centerNode.y);
+	}
+
+	getRadius() {
+		return this.radius;
+	}
+
 	setBounds(minX, minY, maxX, maxY) {
 		this.centerNode.setBounds(minX, minY, maxX, maxY);
 		this.satellite.setBounds(minX, minY, maxX, maxY);

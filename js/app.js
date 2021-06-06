@@ -13,7 +13,7 @@ const cameraView = document.getElementById("camera--view");
 const canvas = document.getElementById("pizza-slicer");
 const buffer = document.getElementById("buffer");
 const cameraTrigger = document.getElementById("camera--trigger");
-const cameraError = document.getElementById("camera--error");
+// const cameraError = document.getElementById("camera--error");
 
 function startCamera() {
 	navigator.mediaDevices
@@ -57,15 +57,23 @@ cameraTrigger.onclick = function () {
 
 function startPizzaSlicing() {
 	circleTool.unregister();
-	sliceTool = new SliceTool(
-		circleTool.centerNode.x,
-		circleTool.centerNode.y,
-		circleTool.satellite.getRadius());
-	circleTool = undefined;
+	sliceTool = new SliceTool(circleTool.getMid(), circleTool.getRadius());
+	// circleTool = undefined;
 
 	cameraTrigger.innerHTML = "Mark the pizza cuts";
-	cameraTrigger.onclick = undefined;
+	cameraTrigger.onclick = distributePizza;
 	repaint();
+}
+
+function distributePizza() {
+	distributeTool = new DistributeTool(
+		circleTool.getMid(),
+		circleTool.getRadius(),
+		sliceTool.getIntersection(),
+		sliceTool.getRays());
+
+	cameraTrigger.innerHTML = "Wooh!";
+	cameraTrigger.onclick = undefined;
 }
 
 function createCanvas() {
@@ -101,18 +109,15 @@ function createCanvas() {
 
 let mouseX;
 let mouseY;
-let isDragging;
 let canvasOffX = 0;
 let canvasOffY = 0;
 
 function handleMouseDown(event){
-	isDragging=true;
 	moveMouse(event.clientX, event.clientY);
 	dragHandler.onCursorDown(mouseX, mouseY);
 }
 
 function handleMouseUp(event){
-	isDragging=false;
 	dragHandler.onCursorUp();
 }
 
@@ -122,13 +127,11 @@ function handleMouseMove(event){
 }
 
 function handleTouchStart(event) {
-	isDragging = true;
 	moveMouse(event.touches[0].clientX, event.touches[0].clientY);
 	dragHandler.onCursorDown(mouseX, mouseY);
 }
 
 function handleTouchEnd(event) {
-	isDragging = false;
 	dragHandler.onCursorUp();
 }
 
@@ -145,6 +148,7 @@ function moveMouse(x, y) {
 let dragHandler;
 let circleTool;
 let sliceTool;
+let distributeTool;
 
 function repaint() {
 	let ctx = canvas.getContext("2d");
@@ -156,8 +160,7 @@ function repaint() {
 
 	if (sliceTool) {
 		sliceTool.display(ctx);
-	}//else
-	if (circleTool) {
+	}else if (circleTool) {
 		circleTool.display(ctx);
 	}
 
@@ -171,4 +174,8 @@ window.addEventListener("load", startCamera, false);
 
 function clamp(num, min, max) {
 	return Math.max(min, Math.min(max, num));
+}
+
+Math.degrees = function(radians) {
+	return radians * 180 / Math.PI;
 }
