@@ -12,11 +12,17 @@ class SliceTool {
 
 		this.controlNodes = [];
 		this.rays = [];
-		let rayCount = 3;
-		
+		let rayCount = 4;
+		let phi = 1/rayCount * 2*Math.PI;
+
 		for (let i = 0; i < rayCount; ++i) {
 			let controlNode = new OrbitNode(this.mid.x, this.mid.y, this.radius, this.radius, this.radius);
-			controlNode.setAngle(i/rayCount * 2*Math.PI);
+			let angle = i * phi;
+
+			if (rayCount % 2 === 0 && i >= rayCount/2) {
+				angle -= Math.PI - phi/2;
+			}
+			controlNode.setAngle(angle);
 
 			let ray = new Ray(this.mid.clone(), this.midNode, controlNode);
 
