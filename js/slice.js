@@ -8,9 +8,12 @@ class Slice {
 		this.corner2Vec = corner2Vec;
 
 		this.calcSize();
+		this.setColor(Color.rnd());
+	}
 
-		this.stroke = Color.rnd();
-		this.fill = this.stroke.clone();
+	setColor(color) {
+		this.stroke = color;
+		this.fill = color.clone();
 		this.fill.a = 0.5;
 	}
 

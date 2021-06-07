@@ -36,39 +36,48 @@ class DistributeTool {
 	distributeSlices(peopleCount) {
 		let sliceDistribution = new Map();
 
-		for (let slice of this.slices) {
-			console.log(Math.round(100 * slice.percentage) + "%");
-		}
 		for (let i = 0; i < peopleCount; ++i) {
 			sliceDistribution.set(i, []);
 		}
-		let bestDistribution = this.distribute(peopleCount, sliceDistribution, Array.from(this.slices), "");
+		let sortedSlices = Array.from(this.slices);
+		sortedSlices.sort(function (a, b) {return b.getPercentage() - a.getPercentage();});
+		let bestDistribution = this.distribute(sliceDistribution, sortedSlices, peopleCount);
+
+		for (let slice of sortedSlices) {
+			console.log((Math.round(10000 * slice.percentage) / 100) + "%");
+		}
+
+		console.log(bestDistribution[0], bestDistribution[1]);
+		for (let slices of bestDistribution[0].values()) {
+			let rndColor = Color.rnd();
+			for (let slice of slices) {
+				slice.setColor(rndColor);
+			}
+		}
 	}
 
-	distribute(peopleCount, sliceDistribution, slicesLeft, level) {
+	distribute(sliceDistribution, slicesLeft, peopleCount, startPerson = 0, endPerson = 1) {
 		if (slicesLeft.length === 0) {
 			let imbalance = this.calcImbalance(peopleCount, sliceDistribution);
 			return [sliceDistribution, imbalance];
 		}
 		let bestDistribution = undefined;
 		let bestImbalance = Infinity;
+		let portionSize = 1 / peopleCount;
 
-		for (let i = 0; i < peopleCount; ++i) {
-			if (this.getPercentageSum(sliceDistribution.get(i)) > 1 / peopleCount) {
+		for (let i = startPerson; i < Math.min(peopleCount, endPerson); ++i) {
+			if (this.getPercentageSum(sliceDistribution.get(i)) > portionSize) {
+				++startPerson;
 				continue;
 			}
-
 			let distributionCopy = this.copyDistribution(sliceDistribution);
 			distributionCopy.get(i).push(slicesLeft[0]);
 			let slicesLeftCopy = slicesLeft.slice(1, slicesLeft.length);
-			let newDistribution = this.distribute(peopleCount, distributionCopy, slicesLeftCopy, level + i);
+			let newDistribution = this.distribute(distributionCopy, slicesLeftCopy, peopleCount, startPerson, endPerson + 1);
 
 			if (newDistribution[1] < bestImbalance) {
 				bestDistribution = newDistribution[0];
 				bestImbalance = newDistribution[1];
-				if (level.length === 0) {
-					console.log(level + i, bestImbalance);
-				}
 			}
 		}
 		return [bestDistribution, bestImbalance];
@@ -89,7 +98,7 @@ class DistributeTool {
 
 		for (let slices of sliceDistribution.values()) {
 			let personPortion = this.getPercentageSum(slices);
-			imbalance += Math.abs(perfectPortion - personPortion) / perfectPortion;
+			imbalance += Math.abs(perfectPortion - personPortion);
 		}
 		return imbalance;
 	}
