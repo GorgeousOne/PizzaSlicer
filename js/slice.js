@@ -15,16 +15,13 @@ class Slice {
 		this.stroke = color;
 		this.fill = color.clone();
 		this.fill.a = 0.5;
+		this.textColor = brighten(color);
 	}
 
 	getAngle() {
 		let edge1 = sub(this.corner1Vec, this.tipVec);
 		let edge2 = sub(this.corner2Vec, this.tipVec);
 		return Math.abs(edge1.angleTo(edge2));
-	}
-
-	getSize() {
-		return this.size;
 	}
 
 	getPercentage() {
@@ -40,8 +37,8 @@ class Slice {
 		let phi = Math.abs(edge1.angleTo(edge2));
 		let circleSegmentSize = Math.pow(this.pizzaRadius, 2) * (phi - Math.sin(phi)) / 2;
 
-		this.size = triangleSize + circleSegmentSize;
-		this.percentage = this.size / (Math.PI * Math.pow(this.pizzaRadius, 2));
+		let size = triangleSize + circleSegmentSize;
+		this.percentage = size / (Math.PI * Math.pow(this.pizzaRadius, 2));
 	}
 
 	display(ctx) {
@@ -69,7 +66,17 @@ class Slice {
 		let edge2 = sub(this.corner2Vec, this.tipVec);
 		let center = add(this.tipVec, add(edge1, edge2).mul(0.45));
 
-		ctx.fillStyle = this.stroke.string();
-		ctx.fillText(Math.round(100 * this.percentage) + "%", center.x, center.y);
+		ctx.fillStyle = this.textColor.string();
+		let percentText = Math.round(100 * this.percentage) + "%";
+		ctx.fillText(percentText, center.x, center.y);
 	}
+}
+
+function getPercentageSum(slices) {
+	let sum = 0;
+
+	for (let slice of slices) {
+		sum += slice.getPercentage();
+	}
+	return sum;
 }

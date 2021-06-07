@@ -32,6 +32,13 @@ class Color {
 	}
 }
 
+function brighten(color, percent = 0.5) {
+	return new Color(
+		color.r + (255 - color.r) * percent,
+		color.g + (255 - color.g) * percent,
+		color.b + (255 - color.b) * percent);
+}
+
 function rndInt(min, max) {
 	return min + Math.floor(Math.random() * (max - min));
 }

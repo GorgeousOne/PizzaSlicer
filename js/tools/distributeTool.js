@@ -51,18 +51,29 @@ class DistributeTool {
 		}
 		let sortedSlices = Array.from(this.slices);
 		sortedSlices.sort(function (a, b) {return b.getPercentage() - a.getPercentage();});
+
 		let bestDistribution = this.distribute(sliceDistribution, sortedSlices, peopleCount);
+		this.createPeople(bestDistribution[0]);
+	}
 
-		for (let slice of sortedSlices) {
-			console.log((Math.round(10000 * slice.percentage) / 100) + "%");
-		}
+	createPeople(sliceDistribution) {
+		this.people = [];
+		let peopleCount = sliceDistribution.size;
 
-		console.log(bestDistribution[0], bestDistribution[1]);
+		let phi = 2*Math.PI / peopleCount;
+		let offPhi = phi* 4/3;
+
+		let centerX = canvas.width / 2;
+		let centerY = canvas.height / 2;
+		let radius = Math.min(centerX, centerY) * 3/4;
+
 		let i = 0;
-		for (let slices of bestDistribution[0].values()) {
-			for (let slice of slices) {
-				slice.setColor(colors[i]);
-			}
+		for (let slices of sliceDistribution.values()) {
+			let x = centerX + Math.cos(offPhi + i * phi) * radius;
+			let y = centerY + Math.sin(offPhi + i * phi) * radius;
+
+			let person = new Person(x, y, colors[i], slices);
+			this.people.push(person);
 			++i;
 		}
 	}
@@ -77,7 +88,7 @@ class DistributeTool {
 		let portionSize = 1 / peopleCount;
 
 		for (let i = startPerson; i < Math.min(peopleCount, endPerson); ++i) {
-			if (this.getPercentageSum(sliceDistribution.get(i)) > portionSize) {
+			if (getPercentageSum(sliceDistribution.get(i)) > portionSize) {
 				++startPerson;
 				continue;
 			}
@@ -108,19 +119,10 @@ class DistributeTool {
 		let imbalance = 0;
 
 		for (let slices of sliceDistribution.values()) {
-			let personPortion = this.getPercentageSum(slices);
+			let personPortion = getPercentageSum(slices);
 			imbalance += Math.abs(perfectPortion - personPortion);
 		}
 		return imbalance;
-	}
-
-	getPercentageSum(slices) {
-		let sum = 0;
-
-		for (let slice of slices) {
-			sum += slice.getPercentage();
-		}
-		return sum;
 	}
 
 	display(ctx) {
@@ -130,6 +132,9 @@ class DistributeTool {
 
 		for (let slice of this.slices) {
 			slice.display(ctx);
+		}
+		for (let person of  this.people) {
+			person.display(ctx);
 		}
 	}
 }
