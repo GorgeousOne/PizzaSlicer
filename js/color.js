@@ -22,6 +22,14 @@ class Color {
 			rndInt(64, 196)
 		)
 	}
+
+	static fromHex(hexString) {
+		return new Color(
+			parseInt(hexString.slice(1, 3), 16),
+			parseInt(hexString.slice(3, 5), 16),
+			parseInt(hexString.slice(5, 7), 16)
+		)
+	}
 }
 
 function rndInt(min, max) {

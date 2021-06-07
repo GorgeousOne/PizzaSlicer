@@ -1,8 +1,18 @@
 
+const colors = [
+	Color.fromHex("#FF3333"),
+	Color.fromHex("#ff970f"),
+	Color.fromHex("#83de3a"),
+	Color.fromHex("#AF3DB8"),
+	Color.fromHex("#fff600"),
+	Color.fromHex("#00ffff"),
+	Color.fromHex("#ff7cac"),
+	Color.fromHex("#0070ff")
+];
+
 class DistributeTool {
 
 	constructor(pizzaMidVec, pizzaRadius, intersectionVec, rays) {
-
 		this.createSlices(pizzaMidVec, pizzaRadius, intersectionVec, rays);
 		this.distributeSlices(4);
 	}
@@ -48,11 +58,12 @@ class DistributeTool {
 		}
 
 		console.log(bestDistribution[0], bestDistribution[1]);
+		let i = 0;
 		for (let slices of bestDistribution[0].values()) {
-			let rndColor = Color.rnd();
 			for (let slice of slices) {
-				slice.setColor(rndColor);
+				slice.setColor(colors[i]);
 			}
+			++i;
 		}
 	}
 
