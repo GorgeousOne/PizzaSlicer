@@ -12,7 +12,7 @@ class Slice {
 	}
 
 	setColor(color) {
-		this.stroke = color;
+		this.stroke = color.clone();
 		this.fill = color.clone();
 		this.fill.a = 0.5;
 		this.textColor = brighten(color);

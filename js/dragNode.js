@@ -27,7 +27,7 @@ class DragNode {
 
 	getMinBoundDistance() {
 		let boundDistances = [
-			this.x - this.minX ,
+			this.x - this.minX,
 			this.y - this.minY,
 			this.maxX - this.x,
 			this.maxY - this.y];

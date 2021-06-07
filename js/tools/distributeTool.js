@@ -74,6 +74,7 @@ class DistributeTool {
 
 			let person = new Person(x, y, colors[i], slices);
 			this.people.push(person);
+			dragHandler.registerNode(person);
 			++i;
 		}
 	}

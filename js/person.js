@@ -1,20 +1,24 @@
 
 const personSize = 45;
 
-class Person {
+class Person extends DragNode {
 
 	constructor(x, y, color, slices) {
-		this.x = x;
-		this.y = y;
-		this.color = color;
+		super(x, y);
+		this.color = color.clone();
 		this.textColor = brighten(color);
-
-		this.slices = slices;
-		this.percentage = getPercentageSum(slices);
+		this.text = Math.round(100 * getPercentageSum(slices)) + "%";
 
 		for (let slice of slices) {
 			slice.setColor(color);
 		}
+		this.size = personSize;
+		this.grabSize = personSize + 10;
+	}
+
+	stopDrag() {
+		super.stopDrag();
+		this.color.a = 1;
 	}
 
 	display(ctx) {
@@ -22,12 +26,11 @@ class Person {
 		ctx.fillStyle = this.color.string();
 		ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
 		ctx.shadowBlur = 20;
-		ctx.arc(this.x, this.y, personSize, 0, 2*Math.PI);
+		ctx.arc(this.x, this.y, this.size, 0, 2*Math.PI);
 		ctx.fill();
 
 		ctx.shadowBlur = 0;
 		ctx.fillStyle = this.textColor.string();
-		let percentText = Math.round(100 * this.percentage) + "%";
-		ctx.fillText(percentText, this.x, this.y);
+		ctx.fillText(this.text, this.x, this.y);
 	}
 }
