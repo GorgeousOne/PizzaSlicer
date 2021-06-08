@@ -80,8 +80,9 @@ function distributePizza() {
 function createCanvas() {
 	let imgWidth = cameraView.videoWidth;
 	let imgHeight = cameraView.videoHeight;
-	let screenWidth = window.innerWidth;
-	let screenHeight = window.innerHeight;
+	let pixelRatio = window.devicePixelRatio || 1;
+	let screenWidth = window.innerWidth * pixelRatio;
+	let screenHeight = window.innerHeight * pixelRatio;
 
 	let imgRatio = imgWidth / imgHeight;
 	let screenRatio = screenWidth / screenHeight;
@@ -162,9 +163,9 @@ function repaint() {
 	ctx.lineWidth = 3;
 
 	ctx.font = "30px Montserrat";
-	ctx.fillText(canvas.width + ", " + canvas.height, 100, 30);
 	ctx.textAlign = "center";
 	ctx.textBaseline = 'middle';
+	ctx.fillText(canvas.width + ", " + canvas.height + " : " + window.devicePixelRatio, 100, 30);
 
 	if (distributeTool) {
 		distributeTool.display(ctx);
@@ -188,4 +189,4 @@ function clamp(num, min, max) {
 
 Math.degrees = function (radians) {
 	return radians * 180 / Math.PI;
-}
+};

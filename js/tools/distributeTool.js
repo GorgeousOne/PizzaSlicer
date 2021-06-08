@@ -127,9 +127,6 @@ class DistributeTool {
 	}
 
 	display(ctx) {
-		ctx.font = "30px Montserrat";
-		ctx.textAlign = "center";
-		ctx.textBaseline = 'middle';
 
 		for (let slice of this.slices) {
 			slice.display(ctx);
