@@ -80,16 +80,18 @@ function distributePizza() {
 function createCanvas() {
 	let imgWidth = cameraView.videoWidth;
 	let imgHeight = cameraView.videoHeight;
-	let screenWidth = cameraView.clientWidth;
-	let screenHeight = cameraView.clientHeight;
+	let screenWidth = cameraView.offsetWidth;
+	let screenHeight = cameraView.offsetHeight;
 
 	let imgRatio = imgWidth / imgHeight;
 	let screenRatio = screenWidth / screenHeight;
 
+	//screen is wider than image
 	if (screenRatio > imgRatio) {
 		canvas.width = screenHeight * imgRatio;
 		canvas.height = screenHeight;
 		canvasOffX = Math.floor((screenWidth - canvas.width) / 2);
+	//screen is taller than image
 	} else {
 		canvas.width = screenWidth;
 		canvas.height = screenWidth / imgRatio;
