@@ -159,6 +159,11 @@ function repaint() {
 	ctx.lineCap = "round";
 	ctx.lineWidth = 3;
 
+	ctx.font = "30px Montserrat";
+	ctx.fillText(canvas.width + ", " + canvas.height, 100, 30);
+	ctx.textAlign = "center";
+	ctx.textBaseline = 'middle';
+
 	if (distributeTool) {
 		distributeTool.display(ctx);
 	} else if (sliceTool) {
