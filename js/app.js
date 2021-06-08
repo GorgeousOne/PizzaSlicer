@@ -10,10 +10,13 @@ let constraints = {
 
 const pixelRatio = window.devicePixelRatio || 1;
 
-let cameraView = document.getElementById("camera--view");
-let canvas = document.getElementById("pizza-slicer");
+let cameraView = document.getElementById("camera-view");
+let canvas = document.getElementById("tool-display");
 let buffer = document.getElementById("buffer");
-let cameraTrigger = document.getElementById("camera--trigger");
+let cameraTrigger = document.getElementById("camera-trigger");
+
+// Start the video stream when the window loads
+window.addEventListener("load", startCamera, false);
 
 function startCamera() {
 	navigator.mediaDevices
@@ -98,11 +101,11 @@ function createCanvas() {
 	}
 	canvas.getContext("2d").drawImage(cameraView, 0, 0, canvas.width, canvas.height);
 	buffer.src = canvas.toDataURL("image/png");
+	buffer.style.display = "block";
 
 	canvas.onmousemove = handleMouseMove;
 	canvas.onmousedown = handleMouseDown;
 	canvas.onmouseup = handleMouseUp;
-	// canvas.onmouseout = handleMouseUp;
 
 	canvas.ontouchstart = handleTouchStart;
 	canvas.ontouchend = handleTouchEnd;
@@ -154,7 +157,7 @@ let distributeTool;
 
 function repaint() {
 	let ctx = canvas.getContext("2d");
-	ctx.drawImage(buffer, 0, 0);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	ctx.lineJoin = "round";
 	ctx.lineCap = "round";
@@ -177,9 +180,6 @@ function repaint() {
 		node.display(ctx);
 	}
 }
-
-// Start the video stream when the window loads
-window.addEventListener("load", startCamera, false);
 
 function clamp(num, min, max) {
 	return Math.max(min, Math.min(max, num));

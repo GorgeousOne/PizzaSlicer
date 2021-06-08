@@ -5,19 +5,19 @@ html, body {
 	width: 100%;
 }
 
-#camera, #camera--view, #camera--sensor, #pizza-slicer {
+#camera, #camera-view, #buffer, #tool-display {
 	position: fixed;
 	height: 100%;
 	width: 100%;
 	object-fit: contain;
 }
 
-#camera--error {
+#camera-error {
 	margin: auto;
 	font-family: 'Montserrat', sans-serif;
 }
 
-#camera--trigger {
+#camera-trigger {
 	width: 200px;
 	background-color: black;
 	color: white;
@@ -32,8 +32,4 @@ html, body {
 	bottom: 30px;
 	left: calc(50% - 100px);
 	font-family: 'Montserrat', sans-serif;
-}
-
-#demo{
-	z-index: 1
 }
