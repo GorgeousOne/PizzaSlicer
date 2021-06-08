@@ -8,12 +8,12 @@ let constraints = {
 	audio: false
 };
 
-const cameraView = document.getElementById("camera--view");
-const canvas = document.getElementById("pizza-slicer");
-const buffer = document.getElementById("buffer");
-const cameraTrigger = document.getElementById("camera--trigger");
+const pixelRatio = window.devicePixelRatio || 1;
 
-// const cameraError = document.getElementById("camera--error");
+let cameraView = document.getElementById("camera--view");
+let canvas = document.getElementById("pizza-slicer");
+let buffer = document.getElementById("buffer");
+let cameraTrigger = document.getElementById("camera--trigger");
 
 function startCamera() {
 	navigator.mediaDevices
@@ -42,7 +42,6 @@ function stopCamera(videoElem) {
 cameraTrigger.onclick = function () {
 	createCanvas();
 	stopCamera(cameraView);
-	// cameraTrigger.parentElement.removeChild(cameraTrigger);
 
 	dragHandler = new DragHandler();
 
@@ -80,7 +79,6 @@ function distributePizza() {
 function createCanvas() {
 	let imgWidth = cameraView.videoWidth;
 	let imgHeight = cameraView.videoHeight;
-	let pixelRatio = window.devicePixelRatio || 1;
 	let screenWidth = window.innerWidth * pixelRatio;
 	let screenHeight = window.innerHeight * pixelRatio;
 
@@ -145,8 +143,8 @@ function handleTouchMove(event) {
 }
 
 function moveMouse(x, y) {
-	mouseX = x - canvasOffX;
-	mouseY = y - canvasOffY;
+	mouseX = (x - canvasOffX) * pixelRatio;
+	mouseY = (y - canvasOffY) * pixelRatio;
 }
 
 let dragHandler;
@@ -160,9 +158,9 @@ function repaint() {
 
 	ctx.lineJoin = "round";
 	ctx.lineCap = "round";
-	ctx.lineWidth = 3;
+	ctx.lineWidth = 3 * pixelRatio;
 
-	ctx.font = "30px Montserrat";
+	ctx.font = 30 * pixelRatio + "px Montserrat";
 	ctx.textAlign = "center";
 	ctx.textBaseline = 'middle';
 	ctx.fillText(canvas.width + ", " + canvas.height + " : " + window.devicePixelRatio, 100, 30);

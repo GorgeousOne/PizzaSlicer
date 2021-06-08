@@ -6,8 +6,8 @@ class DragNode {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
-		this.size = nodeSize;
-		this.grabSize = grabSize;
+		this.size = nodeSize * pixelRatio;
+		this.grabSize = grabSize * pixelRatio;
 
 		this.isDragged = false;
 		this.dragX = 0;
@@ -16,7 +16,7 @@ class DragNode {
 		this.color = new Color(0, 255, 255, 0.5);
 	}
 
-	setBounds(minX, minY, maxX, maxY, spacing = nodeSize / 2) {
+	setBounds(minX, minY, maxX, maxY, spacing = this.size / 2) {
 		this.minX = minX;
 		this.minY = minY;
 		this.maxX = maxX;

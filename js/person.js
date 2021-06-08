@@ -12,8 +12,8 @@ class Person extends DragNode {
 		for (let slice of slices) {
 			slice.setColor(color);
 		}
-		this.size = personSize;
-		this.grabSize = personSize + 10;
+		this.size = personSize * pixelRatio;
+		this.grabSize = (personSize + 10) * pixelRatio;
 	}
 
 	stopDrag() {
