@@ -80,8 +80,8 @@ function distributePizza() {
 function createCanvas() {
 	let imgWidth = cameraView.videoWidth;
 	let imgHeight = cameraView.videoHeight;
-	let screenWidth = cameraView.offsetWidth;
-	let screenHeight = cameraView.offsetHeight;
+	let screenWidth = window.innerWidth;
+	let screenHeight = window.innerHeight;
 
 	let imgRatio = imgWidth / imgHeight;
 	let screenRatio = screenWidth / screenHeight;
