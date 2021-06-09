@@ -72,7 +72,7 @@ class DistributeTool {
 			let x = centerX + Math.cos(offPhi + i * phi) * radius;
 			let y = centerY + Math.sin(offPhi + i * phi) * radius;
 
-			let person = new Person(x, y, colors[i], slices);
+			let person = new PersonNode(x, y, colors[i], slices);
 			this.people.push(person);
 			dragHandler.registerNode(person);
 			++i;

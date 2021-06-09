@@ -166,7 +166,6 @@ function repaint() {
 	ctx.font = 30 * pixelRatio + "px Montserrat";
 	ctx.textAlign = "center";
 	ctx.textBaseline = 'middle';
-	ctx.fillText(canvas.width + ", " + canvas.height + " : " + window.devicePixelRatio, 100, 30);
 
 	if (distributeTool) {
 		distributeTool.display(ctx);

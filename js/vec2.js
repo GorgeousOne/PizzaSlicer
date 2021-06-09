@@ -8,7 +8,7 @@ class Vec2 {
 	clone() {
 		return new Vec2(this.x, this.y);
 	}
-	
+
 	normal() {
 		let length = this.length();
 		this.x /= length;
@@ -42,7 +42,7 @@ class Vec2 {
 		this.y *= scalar;
 		return this;
 	}
-	
+
 	dot(other) {
 		return this.x * other.x + this.y * other.y;
 	}
@@ -55,9 +55,16 @@ class Vec2 {
 		return Math.abs(this.x * other.y - other.x * this.y);
 	}
 
+	/**
+	 * Returns positive angle to other vector between 0 and 2PI
+	 * @param other vec2 to calculate angle towards
+	 */
 	angleTo(other) {
-		let acosPhi = this.dot(other) / (this.length() * other.length());
-		return Math.acos(clamp(acosPhi, -1, 1));
+		let phi = Math.atan2(other.y, other.x) - Math.atan2(this.y, this.x);
+		if (phi < 0) {
+			phi += 2 * Math.PI;
+		}
+		return phi;
 	}
 }
 
@@ -67,7 +74,7 @@ function normal(v1) {
 }
 
 function add(v1, v2) {
-	return new Vec2(v1.x + v2.x, v1.y	 + v2.y);
+	return new Vec2(v1.x + v2.x, v1.y + v2.y);
 }
 
 function sub(v1, v2) {

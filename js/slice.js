@@ -9,6 +9,7 @@ class Slice {
 
 		this.calcSize();
 		this.setColor(Color.rnd());
+		this.text = Math.round(100 * this.percentage) + "%";
 	}
 
 	setColor(color) {
@@ -31,10 +32,12 @@ class Slice {
 	calcSize() {
 		let edge1 = sub(this.corner1Vec, this.tipVec);
 		let edge2 = sub(this.corner2Vec, this.tipVec);
-
 		let triangleSize = edge1.crossLength(edge2) / 2;
+
 		//lots of interesting facts to circular segments I can't comprehend: https://de.wikipedia.org/wiki/Kreissegment
-		let phi = Math.abs(edge1.angleTo(edge2));
+		let radius1 = sub(this.corner1Vec, this.pizzaMidVec);
+		let radius2 = sub(this.corner2Vec, this.pizzaMidVec);
+		let phi = radius1.angleTo(radius2);
 		let circleSegmentSize = Math.pow(this.pizzaRadius, 2) * (phi - Math.sin(phi)) / 2;
 
 		let size = triangleSize + circleSegmentSize;
@@ -67,8 +70,7 @@ class Slice {
 		let center = add(this.tipVec, add(edge1, edge2).mul(0.45));
 
 		ctx.fillStyle = this.textColor.string();
-		let percentText = Math.round(100 * this.percentage) + "%";
-		ctx.fillText(percentText, center.x, center.y);
+		ctx.fillText(this.text, center.x, center.y);
 	}
 }
 

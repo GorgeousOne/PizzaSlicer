@@ -1,12 +1,12 @@
 const nodeSize = 30;
-const grabSize = 50;
+const grabRange = 60;
 
 class DragNode {
 
-	constructor(x, y) {
+	constructor(x, y, size = nodeSize * pixelRatio, grabSize = grabRange * pixelRatio) {
 		this.x = x;
 		this.y = y;
-		this.size = nodeSize * pixelRatio;
+		this.size = size;
 		this.grabSize = grabSize * pixelRatio;
 
 		this.isDragged = false;
@@ -37,7 +37,7 @@ class DragNode {
 	contains(x, y) {
 		let dx = x - this.x;
 		let dy = y - this.y;
-		return Math.pow(dx, 2) + Math.pow(dy, 2) < Math.pow(this.grabSize / 2, 2);
+		return dx * dx + dy * dy < Math.pow(this.grabSize / 2, 2);
 	}
 
 	startDrag(mouseX, mouseY) {
