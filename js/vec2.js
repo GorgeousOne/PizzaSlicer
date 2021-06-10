@@ -56,7 +56,7 @@ class Vec2 {
 	}
 
 	/**
-	 * Returns positive angle to other vector between 0 and 2PI
+	 * Returns a clockwise positive angle to other vector between 0 and 2PI
 	 * @param other vec2 to calculate angle towards
 	 */
 	angleTo(other) {
