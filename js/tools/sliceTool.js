@@ -10,12 +10,24 @@ class SliceTool {
 		this.midNode.maxRadius = this.radius - this.midNode.size;
 		dragHandler.registerNode(this.midNode);
 
+		this.rayCount = 3;
+		this._creatRays();
+		this._createCounter();
+	}
+
+	unregister() {
+		dragHandler.unregisterNode(this.midNode);
+		for (let node of this.controlNodes) {
+			dragHandler.unregisterNode(node);
+		}
+	}
+
+	_creatRays() {
 		this.controlNodes = [];
 		this.rays = [];
-		let rayCount = 3;
-		let phi = 1/rayCount * Math.PI;
+		let phi = 1/this.rayCount * Math.PI;
 
-		for (let i = 0; i < rayCount; ++i) {
+		for (let i = 0; i < this.rayCount; ++i) {
 			let controlNode = new OrbitNode(this.mid.x, this.mid.y, this.radius, this.radius, this.radius);
 			let angle = i * phi;
 
@@ -29,13 +41,34 @@ class SliceTool {
 		}
 	}
 
-	unregister() {
-		dragHandler.unregisterNode(this.midNode);
-		for (let node of this.controlNodes) {
-			dragHandler.unregisterNode(node);
-		}
+	_createCounter() {
+		this.rayCounter = new Counter(document.getElementById("camera"), this.rayCount*2, 4, 12, 2);
+		this.rayCounter.registerChangeListener(this);
+		this.rayCounter.domElement.style.top = "10%";
 	}
 
+	/**
+	 * Synchronizes amount of slicing rays with counter. Skips 10 sliced pizza.
+	 * @param event
+	 */
+	oncounterchange(event) {
+		if (event.new > event.oldVal) {
+			addRay();
+			if (event.newVal === 10) {
+				event.newVal = 12;
+				addRay();
+			}
+		}else {
+			removeRay();
+			if (event.newVal === 10) {
+				event.newVal = 8;
+				removeRay();
+			}
+		}
+	}
+	_addRay() {
+
+	}
 	getIntersection() {
 		return new Vec2(this.midNode.x, this.midNode.y);
 	}
