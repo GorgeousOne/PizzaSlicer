@@ -27,6 +27,10 @@ class Counter {
 		this._create_dom_element();
 	}
 
+	getValue() {
+		return this.value;
+	}
+
 	registerChangeListener(listener) {
 		if (typeof listener.oncounterchange != 'function') {
 			throw "Listener does not have function oncounterchange";

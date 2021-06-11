@@ -12,9 +12,9 @@ const colors = [
 
 class DistributeTool {
 
-	constructor(pizzaMidVec, pizzaRadius, intersectionVec, rays) {
+	constructor(peopleCount, pizzaMidVec, pizzaRadius, intersectionVec, rays) {
 		this.createSlices(pizzaMidVec, pizzaRadius, intersectionVec, rays);
-		this.distributeSlices(4);
+		this.distributeSlices(peopleCount);
 	}
 
 	createSlices(pizzaMidVec, pizzaRadius, intersectionVec, rays) {

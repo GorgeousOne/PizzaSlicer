@@ -81,7 +81,9 @@ class SliceTool {
 		return this.rays;
 	}
 
-	// update() {}
+	getSliceCount() {
+		return this.rays.length * 2;
+	}
 
 	display(ctx) {
 		// this.update();

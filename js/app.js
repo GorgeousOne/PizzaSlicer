@@ -18,6 +18,15 @@ let cameraTrigger = document.getElementById("camera-trigger");
 // Start the video stream when the window loads
 window.addEventListener("load", startCamera, false);
 
+function showMessage(htmlString) {
+	document.getElementById("message-container").style.display = "flex";
+	document.getElementById("message").insertAdjacentHTML("beforeend", htmlString);
+}
+
+function hideMessage() {
+	document.getElementById("message-container").style.display = "none";
+}
+
 function startCamera() {
 	navigator.mediaDevices
 		.getUserMedia(constraints)
@@ -27,7 +36,7 @@ function startCamera() {
 			cameraTrigger.style.display = "block";
 		})
 		.catch(function (error) {
-			document.getElementById("error-container").style.display = "flex";
+			showMessage(`<h1>Ooops...</h1><p>Couldn't access your camera</p>`);
 			console.error(error);
 		});
 }
@@ -62,13 +71,34 @@ function startPizzaSlicing() {
 	sliceTool = new SliceTool(circleTool.getMid(), circleTool.getRadius());
 
 	cameraTrigger.innerHTML = "Show how your pizza was cut";
-	cameraTrigger.onclick = distributePizza;
+	cameraTrigger.onclick = requestPeopleCount;
 	repaint();
 }
 
-function distributePizza() {
+let peopleCounter;
+
+function requestPeopleCount() {
 	sliceTool.unregister();
+
+	showMessage(`<h1>How many people want to eat pizza?</h1>`);
+	peopleCounter = new Counter(document.getElementById("camera"), 3, 2, 6, 1);
+	peopleCounter.domElement.style.top = "50%";
+
+	canvas.style.display = "none";
+	buffer.style.display = "none";
+	cameraTrigger.innerHTML = "Continue";
+	cameraTrigger.onclick = distributePizza;
+}
+
+function distributePizza() {
+	hideMessage();
+	peopleCounter.remove();
+
+	canvas.style.display = "block";
+	buffer.style.display = "block";
+
 	distributeTool = new DistributeTool(
+		peopleCounter.getValue(),
 		circleTool.getMid(),
 		circleTool.getRadius(),
 		sliceTool.getIntersection(),
