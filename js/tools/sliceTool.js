@@ -11,11 +11,29 @@ class SliceTool {
 		dragHandler.registerNode(this.midNode);
 
 		this.controlNodes = [];
-		this.rays = [];
-		let rayCount = 3;
-		let phi = 1/rayCount * Math.PI;
+		this.rayCount = 3;
+		this._creatRays();
+		this._createCounter();
+	}
 
-		for (let i = 0; i < rayCount; ++i) {
+	unregister() {
+		dragHandler.unregisterNode(this.midNode);
+		for (let node of this.controlNodes) {
+			dragHandler.unregisterNode(node);
+		}
+		this.rayCounter.remove();
+	}
+
+	_creatRays() {
+		for (let node of this.controlNodes) {
+			dragHandler.unregisterNode(node);
+		}
+		this.controlNodes = [];
+
+		this.rays = [];
+		let phi = 1/this.rayCount * Math.PI;
+
+		for (let i = 0; i < this.rayCount; ++i) {
 			let controlNode = new OrbitNode(this.mid.x, this.mid.y, this.radius, this.radius, this.radius);
 			let angle = i * phi;
 
@@ -27,13 +45,32 @@ class SliceTool {
 			this.rays.push(ray);
 			dragHandler.registerNode(controlNode);
 		}
+		repaint();
 	}
 
-	unregister() {
-		dragHandler.unregisterNode(this.midNode);
-		for (let node of this.controlNodes) {
-			dragHandler.unregisterNode(node);
+	_createCounter() {
+		this.rayCounter = new Counter(document.getElementById("camera"), this.rayCount*2, 4, 12, 2);
+		this.rayCounter.registerChangeListener(this);
+		this.rayCounter.domElement.style.top = "30px";
+	}
+
+	/**
+	 * Synchronizes amount of slicing rays with counter. Skips 10 sliced pizza.
+	 * @param event
+	 */
+	oncounterchange(event) {
+		if (event.newVal > event.oldVal) {
+			if (event.newVal === 10) {
+				event.newVal = 12;
+			}
+
+		}else {
+			if (event.newVal === 10) {
+				event.newVal = 8;
+			}
 		}
+		this.rayCount = event.newVal / 2;
+		this._creatRays();
 	}
 
 	getIntersection() {
@@ -44,7 +81,9 @@ class SliceTool {
 		return this.rays;
 	}
 
-	// update() {}
+	getSliceCount() {
+		return this.rays.length * 2;
+	}
 
 	display(ctx) {
 		// this.update();

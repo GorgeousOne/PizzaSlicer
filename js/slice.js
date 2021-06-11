@@ -8,14 +8,14 @@ class Slice {
 		this.corner2Vec = corner2Vec;
 
 		this.calcSize();
-		this.setColor(Color.rnd());
+		this.setColor(new Color(255, 255, 255));
 		this.text = Math.round(100 * this.percentage) + "%";
 	}
 
 	setColor(color) {
 		this.stroke = color.clone();
 		this.fill = color.clone();
-		this.fill.a = 0.5;
+		this.fill.a = 0.25;
 		this.textColor = brighten(color);
 	}
 
