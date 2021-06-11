@@ -1,9 +1,9 @@
 const xmlString = `
-		<div class="count-container">
+		<div class="counter-container">
 			<div class="counter">
-				<button class="count-button" id="minus">-</button>
+				<button id="minus">-</button>
 				<span id="value">0</span>
-				<button class="count-button" id="plus">+</button>
+				<button id="plus">+</button>
 			</div>
 		<div>`;
 
@@ -31,25 +31,17 @@ class Counter {
 		if (typeof listener.oncounterchange != 'function') {
 			throw "Listener does not have function oncounterchange";
 		}
-		listener.push(listener);
+		this.listeners.push(listener);
 	}
 
 	_create_dom_element() {
-		let parser = new DOMParser();
-		let doc;
+		this.domParent.insertAdjacentHTML("beforeend", xmlString);
+		this.domElement = this.domParent.lastChild;
 
-		try {
-			doc = parser.parseFromString(xmlString, 'text/html');
-			this.domElement = doc.firstChild;
-		} catch (err) {
-			console.error("Oops " + err);
-		}
-		this.domParent.appendChild(this.domElement);
-		this.decButton = doc.getElementById("minus");
-		this.incButton = doc.getElementById("plus");
-		console.log(doc, this.decButton, this.incButton);
-		this.decButton.onclick = this._decrement;
-		this.incButton.onclick = this._increment;
+		this.decButton = this.domElement.querySelector("#minus");
+		this.incButton = this.domElement.querySelector("#plus");
+		this.decButton.onclick = this._decrement.bind(this);
+		this.incButton.onclick = this._increment.bind(this);
 		this._updateDom();
 	}
 
@@ -83,7 +75,7 @@ class Counter {
 	}
 
 	_updateDom() {
-		this.domElement.getElementById("value").textContent = this.value.toString();
+		this.domElement.querySelector("#value").textContent = this.value.toString();
 	}
 
 	remove() {
@@ -91,14 +83,3 @@ class Counter {
 		this.listeners = [];
 	}
 }
-
-/**
- * Convert a template string into HTML DOM nodes
- * @param  {String} str The template string
- * @return {Node}       The template HTML
- */
-let stringToHTML = function (str) {
-	let parser = new DOMParser();
-	let doc = parser.parseFromString(str, 'text/html');
-	return doc.body;
-};

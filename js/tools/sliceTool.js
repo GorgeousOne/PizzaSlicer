@@ -10,6 +10,7 @@ class SliceTool {
 		this.midNode.maxRadius = this.radius - this.midNode.size;
 		dragHandler.registerNode(this.midNode);
 
+		this.controlNodes = [];
 		this.rayCount = 3;
 		this._creatRays();
 		this._createCounter();
@@ -20,10 +21,15 @@ class SliceTool {
 		for (let node of this.controlNodes) {
 			dragHandler.unregisterNode(node);
 		}
+		this.rayCounter.remove();
 	}
 
 	_creatRays() {
+		for (let node of this.controlNodes) {
+			dragHandler.unregisterNode(node);
+		}
 		this.controlNodes = [];
+
 		this.rays = [];
 		let phi = 1/this.rayCount * Math.PI;
 
@@ -39,12 +45,13 @@ class SliceTool {
 			this.rays.push(ray);
 			dragHandler.registerNode(controlNode);
 		}
+		repaint();
 	}
 
 	_createCounter() {
 		this.rayCounter = new Counter(document.getElementById("camera"), this.rayCount*2, 4, 12, 2);
 		this.rayCounter.registerChangeListener(this);
-		this.rayCounter.domElement.style.top = "10%";
+		this.rayCounter.domElement.style.top = "30px";
 	}
 
 	/**
@@ -52,23 +59,20 @@ class SliceTool {
 	 * @param event
 	 */
 	oncounterchange(event) {
-		if (event.new > event.oldVal) {
-			addRay();
+		if (event.newVal > event.oldVal) {
 			if (event.newVal === 10) {
 				event.newVal = 12;
-				addRay();
 			}
+
 		}else {
-			removeRay();
 			if (event.newVal === 10) {
 				event.newVal = 8;
-				removeRay();
 			}
 		}
+		this.rayCount = event.newVal / 2;
+		this._creatRays();
 	}
-	_addRay() {
 
-	}
 	getIntersection() {
 		return new Vec2(this.midNode.x, this.midNode.y);
 	}
