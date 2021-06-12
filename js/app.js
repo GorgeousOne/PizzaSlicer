@@ -149,7 +149,7 @@ let canvasOffX = 0;
 let canvasOffY = 0;
 
 function handleMouseDown(event) {
-	moveMouse(event.clientX, event.clientY);
+	moveMouse(event.clientX - canvasOffX, event.clientY - canvasOffY);
 	dragHandler.onCursorDown(mouseX, mouseY);
 }
 
@@ -158,7 +158,7 @@ function handleMouseUp(event) {
 }
 
 function handleMouseMove(event) {
-	moveMouse(event.clientX, event.clientY);
+	moveMouse(event.clientX - canvasOffX, event.clientY - canvasOffY);
 	dragHandler.onCursorMove(mouseX, mouseY);
 }
 
@@ -177,8 +177,8 @@ function handleTouchMove(event) {
 }
 
 function moveMouse(x, y) {
-	mouseX = (x - canvasOffX) * pixelRatio;
-	mouseY = (y - canvasOffY) * pixelRatio;
+	mouseX = x * pixelRatio;
+	mouseY = y * pixelRatio;
 }
 
 let dragHandler;
