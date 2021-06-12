@@ -113,8 +113,8 @@ function distributePizza() {
 function createCanvas() {
 	let imgWidth = cameraView.videoWidth;
 	let imgHeight = cameraView.videoHeight;
-	let screenWidth = window.innerWidth * pixelRatio;
-	let screenHeight = window.innerHeight * pixelRatio;
+	let screenWidth = window.innerWidth;
+	let screenHeight = window.innerHeight;
 
 	let imgRatio = imgWidth / imgHeight;
 	let screenRatio = screenWidth / screenHeight;
@@ -130,6 +130,9 @@ function createCanvas() {
 		canvas.height = screenWidth / imgRatio;
 		canvasOffY = Math.floor((screenHeight - canvas.height) / 2);
 	}
+	canvas.height *= pixelRatio;
+	canvas.width *= pixelRatio;
+
 	canvas.getContext("2d").drawImage(cameraView, 0, 0, canvas.width, canvas.height);
 	buffer.src = canvas.toDataURL("image/png");
 	buffer.style.display = "block";
