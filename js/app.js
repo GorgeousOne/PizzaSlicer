@@ -147,9 +147,11 @@ let mouseX;
 let mouseY;
 let canvasOffX = 0;
 let canvasOffY = 0;
+let rawX;
+let rawY;
 
 function handleMouseDown(event) {
-	moveMouse(event.clientX - canvasOffX, event.clientY - canvasOffY);
+	moveMouse(event.clientX, event.clientY);
 	dragHandler.onCursorDown(mouseX, mouseY);
 }
 
@@ -158,7 +160,7 @@ function handleMouseUp(event) {
 }
 
 function handleMouseMove(event) {
-	moveMouse(event.clientX - canvasOffX, event.clientY - canvasOffY);
+	moveMouse(event.clientX, event.clientY);
 	dragHandler.onCursorMove(mouseX, mouseY);
 }
 
@@ -177,8 +179,11 @@ function handleTouchMove(event) {
 }
 
 function moveMouse(x, y) {
-	mouseX = x * pixelRatio;
-	mouseY = y * pixelRatio;
+	rawX = x;
+	rawY = y;
+	mouseX = (x - canvasOffX) * pixelRatio;
+	mouseY = (y - canvasOffY) * pixelRatio;
+	repaint();
 }
 
 let dragHandler;
@@ -208,6 +213,17 @@ function repaint() {
 
 	for (let node of dragHandler.nodes) {
 		node.display(ctx);
+	}
+
+	ctx.fillText(canvas.width + ", " + canvas.height, 100, 100);
+	ctx.fillText(rawX + ", " + rawY, 100, 200);
+	ctx.fillText(mouseX + ", " + mouseY, 100, 300);
+
+	if (dragHandler.isDragging) {
+		ctx.beginPath();
+		ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+		ctx.arc(mouseX, mouseY, 10, 0, 2* Math.PI)
+		ctx.fill();
 	}
 }
 
