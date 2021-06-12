@@ -4,25 +4,38 @@
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Name of your awesome camera app -->
-	<title>Camera App</title>
-	<!-- Link to your main style sheet-->
+	<title>Pizza Slicer</title>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="counter.css">
 </head>
 
 <body>
-<!-- Camera -->
 <main id="camera">
-	<!-- Camera sensor -->
-	<canvas id="camera--sensor"></canvas>
-	<!-- Camera view -->
-	<video id="camera--view" autoplay playsinline></video>
-	<!-- Camera output -->
-	<img src="//:0" alt="" id="camera--output">
-	<!-- Camera trigger -->
-	<button id="camera--trigger">Take a picture</button>
+	<video id="camera-view" autoplay playsinline></video>
+	<img src="//:0" alt="" id="buffer" style="display: none;">
+	<canvas id="tool-display" style="z-index: 1;"></canvas>
+	<button id="camera-trigger" style="display: none; z-index: 2;">Take a picture of your pizza</button>
+	<div id="message-container" style="display: none;">
+		<div id="message"></div>
+	</div>
 </main>
-<!-- Reference to your JavaScript file -->
-<script src="app.js"></script>
+
+<script src="js/vec2.js"></script>
+<script src="js/color.js"></script>
+<script src="js/dragNode.js"></script>
+<script src="js/orbitNode.js"></script>
+<script src="js/dragHandler.js"></script>
+<script src="js/counter.js"></script>
+<script src="js/ray.js"></script>
+<script src="js/slice.js"></script>
+<script src="js/tools/circleTool.js"></script>
+<script src="js/tools/sliceTool.js"></script>
+<script src="js/personNode.js"></script>
+<script src="js/tools/distributeTool.js"></script>
+<script src="js/app.js"></script>
+
 </body>
 </html>
