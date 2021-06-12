@@ -59,7 +59,7 @@ cameraTrigger.onclick = function () {
 	dragHandler = new DragHandler();
 
 	let minExtent = Math.min(canvas.width, canvas.height);
-	circleTool = new CircleTool(canvas.width / 2, canvas.height / 2, minExtent / 4);
+	circleTool = new CircleTool(canvas.width / 2, canvas.height / 2, minExtent / 3);
 	circleTool.setBounds(0, 0, canvas.width, canvas.height);
 
 	cameraTrigger.innerHTML = "Circle your pizza";
@@ -81,7 +81,7 @@ let peopleCounter;
 function requestPeopleCount() {
 	sliceTool.unregister();
 
-	showMessage(`<h1>How many people want to eat pizza?</h1>`);
+	showMessage(`<h1>How many people want to eat the pizza?</h1>`);
 	peopleCounter = new Counter(document.getElementById("camera"), 3, 2, 6, 1);
 	peopleCounter.domElement.style.top = "50%";
 

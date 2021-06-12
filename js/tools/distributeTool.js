@@ -115,19 +115,26 @@ class DistributeTool {
 		return copy;
 	}
 
+	/**
+	 * Returns a value for how imbalanced the slice distribution is based on percentage.
+	 * Missing or additional percent to each portion are summed up
+	 * (and squared for greater differences to have a bigger impact)
+	 * @param {number} peopleCount
+	 * @param {Map} sliceDistribution
+	 * @returns {number}
+	 */
 	calcImbalance(peopleCount, sliceDistribution) {
 		let perfectPortion = 1 / peopleCount;
 		let imbalance = 0;
 
 		for (let slices of sliceDistribution.values()) {
 			let personPortion = getPercentageSum(slices);
-			imbalance += Math.abs(perfectPortion - personPortion);
+			imbalance += Math.pow(perfectPortion - personPortion, 2);
 		}
 		return imbalance;
 	}
 
 	display(ctx) {
-
 		for (let slice of this.slices) {
 			slice.display(ctx);
 		}
