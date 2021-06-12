@@ -215,9 +215,10 @@ function repaint() {
 		node.display(ctx);
 	}
 
-	ctx.fillText(canvas.width + ", " + canvas.height, 100, 100);
-	ctx.fillText(rawX + ", " + rawY, 100, 200);
-	ctx.fillText(mouseX + ", " + mouseY, 100, 300);
+	ctx.textAlign = "left";
+	ctx.fillText(canvas.width + "-" + canvasOffX + ", " + canvas.height + "-" + canvasOffY, 50, 100);
+	ctx.fillText(rawX + ", " + rawY, 50, 200);
+	ctx.fillText(mouseX + ", " + mouseY, 50, 300);
 
 	if (dragHandler.isDragging) {
 		ctx.beginPath();
