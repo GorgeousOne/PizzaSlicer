@@ -14,12 +14,12 @@ html, body {
 
 #message {
 	margin: auto;
+	max-width: 75%;
 	font-family: 'Montserrat', sans-serif;
 }
 
 #camera-trigger {
 	position: fixed;
-	height: 60px;
 	max-width: 50%;
 	left: 50%;
 	bottom: 30px;

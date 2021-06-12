@@ -14,12 +14,12 @@
 }
 
 .counter *:not(:last-child) {
-	margin-right: 10px;
+	margin-right: 5px;
 }
 
 .counter button {
-	width: 35px;
-	height: 35px;
+	width: 40px;
+	height: 40px;
 
 	color: white;
 	background-color: transparent;

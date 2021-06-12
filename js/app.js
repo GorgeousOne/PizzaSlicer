@@ -49,6 +49,7 @@ function stopCamera(videoElem) {
 		track.stop();
 	});
 	videoElem.srcObject = null;
+	videoElem.style.display = "none";
 }
 
 cameraTrigger.onclick = function () {
