@@ -213,21 +213,8 @@ function repaint() {
 	} else if (circleTool) {
 		circleTool.display(ctx);
 	}
-
 	for (let node of dragHandler.nodes) {
 		node.display(ctx);
-	}
-
-	ctx.textAlign = "left";
-	ctx.fillText(canvas.width + "-" + canvasOffX + ", " + canvas.height + "-" + canvasOffY, 50, 100);
-	ctx.fillText(rawX + ", " + rawY, 50, 200);
-	ctx.fillText(mouseX + ", " + mouseY, 50, 300);
-
-	if (dragHandler.isDragging) {
-		ctx.beginPath();
-		ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-		ctx.arc(mouseX, mouseY, 10, 0, 2* Math.PI)
-		ctx.fill();
 	}
 }
 

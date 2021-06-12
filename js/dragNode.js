@@ -1,5 +1,5 @@
 const nodeSize = 30;
-const grabRange = 60;
+const grabRange = 45;
 
 class DragNode {
 

@@ -1,6 +1,6 @@
 
 const personSize = 90;
-const personGrabRange = 120;
+const personGrabRange = 110;
 
 class PersonNode extends DragNode {
 

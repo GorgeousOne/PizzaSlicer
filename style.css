@@ -5,6 +5,12 @@ html, body {
 	width: 100%;
 }
 
+canvas {
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+
 #camera, #camera-view, #buffer, #tool-display {
 	position: fixed;
 	height: 100%;
